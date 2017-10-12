@@ -1,0 +1,22 @@
+---
+#- name: Install required packages
+#  package: state=present pkg="{{ item }}" install_recommends=no update_cache=yes cache_valid_time=3600
+#  with_items: [ "{{ letsencrypt_required_packages }}" ]
+
+#- name: Upgrade python pip
+#  command: pip install --upgrade pip
+#  changed_when: false
+
+#sudo easy_install urllib3 openssl
+
+- name: Ensure Let's Encrypt certbot client directory exists
+  file: path={{ letsencrypt_client_directory }} state=directory mode=0755
+
+- name: Download Let's Encrypt certbot client
+  #git: dest={{ letsencrypt_src_directory }} clone=yes repo=https://github.com/certbot/certbot force=yes
+  get_url: url=https://dl.eff.org/certbot-auto dest="{{ letsencrypt_client_directory }}/certbot-auto" mode=0755 force=yes
+
+- name: Install/update Let's Encrypt certbot client
+  command: "{{ letsencrypt_client_directory }}/certbot-auto --non-interactive --version"
+  register: letsencrypt_client_install
+  changed_when: ('Installation succeeded.' in letsencrypt_client_install.stdout)

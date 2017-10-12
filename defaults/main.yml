@@ -1,0 +1,31 @@
+---
+# defaults file for ansible-role-letsencrypt
+  letsencrypt_client_directory: /usr/local/bin
+
+  letsencrypt_cert_domains:
+    - "{{ inventory_hostname }}"
+    - "{{ ansible_fqdn }}"
+
+  letsencrypt_webroot_path: /var/www/html
+  letsencrypt_authenticator: webroot
+  letsencrypt_email: "webmaster@{{ ansible_domain }}"
+
+  letsencrypt_cert_name: "{{ letsencrypt_cert_domains[0] }}"
+  #letsencrypt_cert_name_suffix:
+
+  #letsencrypt_rsa_key_size:
+
+  letsencrypt_cert_command: "{{ letsencrypt_client_directory }}/certbot-auto certonly --non-interactive --agree-tos \
+  {% if letsencrypt_rsa_key_size is defined %}--rsa-key-size {{ letsencrypt_rsa_key_size }}{% endif %} \
+  {% for domain in letsencrypt_cert_domains %}--domain {{ domain }} {% endfor %} \
+  --email {{ letsencrypt_email }} \
+  --webroot -w {{ letsencrypt_webroot_path }} \
+  --cert-name {{ letsencrypt_cert_name }}{% if letsencrypt_cert_name_suffix is defined %}-{{ letsencrypt_cert_name_suffix }}{% endif %} \
+  --expand"
+
+  letsencrypt_renewal_command: "{{ letsencrypt_client_directory }}/certbot-auto renew --non-interactive --quiet"
+  letsencrypt_renewal_command_args: '--renew-hook "service apache2 restart"'
+  letsencrypt_renewal_frequency:
+    day: "*"
+    hour: 2
+    minute: 0

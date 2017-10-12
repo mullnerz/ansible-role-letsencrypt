@@ -1,0 +1,21 @@
+---
+- name: Create Let's Encrypt webserver config files
+  template: src="{{ item }}" dest="{{ apache2_config_dir }}/{{ item }}" mode=0644
+  #notify: Restart apache2
+  with_items:
+    - letsencrypt-auth.conf
+  register: create_apache_letsencrypt_config
+
+- name: Enable Let's Encrypt webserver config files
+  command: a2enconf {{ item }}
+  args:
+    creates: /etc/apache2/conf-enabled/{{ item }}
+  #notify: Restart apache2
+  with_items:
+    - letsencrypt-auth.conf
+  register: enable_apache_letsencrypt_config
+  when: (ansible_os_family == 'Debian')
+
+- name: Ensure apache is running and has our configuration
+  service: name="{{ apache2_svc }}" state=restarted
+  when: create_apache_letsencrypt_config|changed or enable_apache_letsencrypt_config|changed

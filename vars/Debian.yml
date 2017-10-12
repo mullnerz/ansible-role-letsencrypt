@@ -1,0 +1,6 @@
+---
+apache2_svc: apache2
+apache2_grp: www-data
+
+apache2_config_dir: /etc/apache2/conf-available
+apache2_sites_dir: /etc/apache2/sites-available

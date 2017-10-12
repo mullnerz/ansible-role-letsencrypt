@@ -1,0 +1,6 @@
+---
+apache2_svc: httpd
+apache2_grp: apache
+
+apache2_config_dir: /etc/httpd/conf.d
+apache2_sites_dir: /etc/httpd/conf.d

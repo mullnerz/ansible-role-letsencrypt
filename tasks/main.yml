@@ -1,0 +1,24 @@
+---
+# tasks file for ansible-role-letsencrypt
+- name: Set os-family specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "{{ ansible_os_family }}.yml"
+    - default.yml
+  tags: always
+
+- name: Set distribution specific variables
+  include_vars: "{{ item }}"
+  with_first_found:
+    - "vars/packages-{{ ansible_distribution|lower }}-{{ ansible_distribution_version }}.yml"
+    - "vars/packages-{{ ansible_distribution|lower }}-{{ ansible_distribution_major_version }}.yml"
+    - "vars/packages-{{ ansible_distribution|lower }}.yml"
+    - "vars/packages-{{ ansible_os_family|lower }}.yml"
+    - "vars/packages-default.yml"
+  tags: always
+
+- import_tasks: setup.yml
+- import_tasks: client.yml
+- import_tasks: cert.yml
+- import_tasks: renew.yml
+
