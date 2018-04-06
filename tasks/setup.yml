@@ -18,4 +18,4 @@
 
 - name: Ensure apache is running and has our configuration
   service: name="{{ apache2_svc }}" state=restarted
-  when: create_apache_letsencrypt_config|changed or enable_apache_letsencrypt_config|changed
+  when: create_apache_letsencrypt_config is changed or enable_apache_letsencrypt_config is changed
