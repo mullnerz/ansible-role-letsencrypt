@@ -2,7 +2,7 @@
 - name: Install Let's Encrypt renewal cron job
   become: yes
   cron: name="Renew Let's Encrypt certificates"
-        job="chronic {{ letsencrypt_renewal_command }} {{ letsencrypt_renewal_command_args }}"
+        job="chronic {{ letsencrypt_renewal_command }}"
         cron_file=letsencrypt-renewal
         user=root
         day="{{ letsencrypt_renewal_frequency.day }}"

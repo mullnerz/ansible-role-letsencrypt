@@ -14,7 +14,7 @@
 
 - name: Download Let's Encrypt certbot client
   #git: dest={{ letsencrypt_src_directory }} clone=yes repo=https://github.com/certbot/certbot force=yes
-  get_url: url=https://dl.eff.org/certbot-auto dest="{{ letsencrypt_client_directory }}/certbot-auto" mode=0755 force=yes
+  get_url: url=https://dl.eff.org/certbot-auto dest="{{ letsencrypt_client_directory }}/certbot-auto" mode=0755 force=no
 
 - name: Install/update Let's Encrypt certbot client
   command: "{{ letsencrypt_client_directory }}/certbot-auto --non-interactive --version"

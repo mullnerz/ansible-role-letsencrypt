@@ -2,9 +2,10 @@
 - debug: var=letsencrypt_cert_command
 
 - name: Obtain or renew certificate for domains
-  shell: executable=/bin/bash {{ letsencrypt_cert_command }}
+  shell: "{{ letsencrypt_cert_command }}"
+  args:
+    executable: /bin/bash
+    #creates: "/etc/letsencrypt/live/{{ letsencrypt_cert_name }}"
   register: letsencrypt_certbot
   changed_when: ('Congratulations!' in letsencrypt_certbot.stdout)
-  #args:
-  #  creates: "/etc/letsencrypt/live/{{ letsencrypt_cert_domains[0] }}"
   notify: Restart apache2
