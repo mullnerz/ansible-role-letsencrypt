@@ -11,6 +11,7 @@
   letsencrypt_email: "webmaster@{{ ansible_domain }}"
 
   letsencrypt_use_staging: false
+  letsencrypt_force_renewal: false
 
   letsencrypt_cert_name: "{{ letsencrypt_cert_domains[0] }}"
   #letsencrypt_cert_name_suffix:
@@ -26,6 +27,7 @@
     --cert-name {{ letsencrypt_cert_name }}{% if letsencrypt_cert_name_suffix is defined %}-{{ letsencrypt_cert_name_suffix }}{% endif %}
     --expand
     {% if letsencrypt_use_staging %}--staging{% endif %}
+    {% if letsencrypt_force_renewal %}--force-renewal{% endif %}
 
   letsencrypt_renewal_command: >-
     {{ letsencrypt_client_directory }}/certbot-auto renew --non-interactive --quiet {{ letsencrypt_renewal_command_args }}
