@@ -1,7 +1,6 @@
 ---
 #- name: Install required packages
-#  package: state=present pkg="{{ item }}" install_recommends=no update_cache=yes cache_valid_time=3600
-#  with_items: [ "{{ letsencrypt_required_packages }}" ]
+#  package: state=present pkg="{{ letsencrypt_required_packages }}" install_recommends=no update_cache=yes cache_valid_time=3600
 
 #- name: Upgrade python pip
 #  command: pip install --upgrade pip
