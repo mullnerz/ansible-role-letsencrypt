@@ -1,13 +1,6 @@
 ---
 letsencrypt_required_packages:
-  - build-essential
-  - libssl-dev
-  - libffi-dev
-  - python-dev
-  - python-pip
-  - python-virtualenv
-  - dialog
-  - libaugeas0
-  - ca-certificates
-  - apache2
-  #- git
+  - software-properties-common
+
+letsencrypt_packages:
+  - certbot
