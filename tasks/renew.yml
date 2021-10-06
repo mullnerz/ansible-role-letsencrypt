@@ -1,22 +1,22 @@
 ---
-- name: Configure Let's Encrypt renewal cron file
-  become: yes
-  cronvar:  name="SHELL"
-            value="/bin/bash"
-            cron_file=letsencrypt-renewal
+# - name: Configure Let's Encrypt renewal cron file
+#   become: yes
+#   cronvar:  name="SHELL"
+#             value="/bin/bash"
+#             cron_file=letsencrypt-renewal
 
-- name: Configure Let's Encrypt renewal cron file
-  become: yes
-  cronvar:  name="PATH"
-            value="/sbin:/bin:/usr/sbin:/usr/bin"
-            cron_file=letsencrypt-renewal
+# - name: Configure Let's Encrypt renewal cron file
+#   become: yes
+#   cronvar:  name="PATH"
+#             value="/sbin:/bin:/usr/sbin:/usr/bin"
+#             cron_file=letsencrypt-renewal
 
-- name: Install Let's Encrypt renewal cron job
-  become: yes
-  cron: name="Renew Let's Encrypt certificates"
-        job="chronic {{ letsencrypt_renewal_command }}"
-        cron_file=letsencrypt-renewal
-        user=root
-        day="{{ letsencrypt_renewal_frequency.day }}"
-        hour="{{ letsencrypt_renewal_frequency.hour }}"
-        minute="{{ letsencrypt_renewal_frequency.minute }}"
+# - name: Install Let's Encrypt renewal cron job
+#   become: yes
+#   cron: name="Renew Let's Encrypt certificates"
+#         job="chronic {{ letsencrypt_renewal_command }}"
+#         cron_file=letsencrypt-renewal
+#         user=root
+#         day="{{ letsencrypt_renewal_frequency.day }}"
+#         hour="{{ letsencrypt_renewal_frequency.hour }}"
+#         minute="{{ letsencrypt_renewal_frequency.minute }}"
