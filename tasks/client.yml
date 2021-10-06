@@ -1,16 +1,23 @@
 ---
-- name: Install required packages
+- name: Install required os packages
   package: state=present pkg="{{ letsencrypt_required_packages }}" install_recommends=no update_cache=yes cache_valid_time=3600
-  tags: packages
 
-- name: Enable Ubuntu universe repository
-  #apt_repository: repo='universe' state=present update_cache=yes mode=644
-  shell: add-apt-repository universe
-  register: add_universe_repository_command
-  changed_when: not ('already enabled' in add_universe_repository_command.stdout)
-  become: yes
-  tags: packages
+- name: Install required pip packages
+  pip:
+    name: pip
+    state: latest
+    virtualenv: /opt/certbot/
+    virtualenv_command: 'python3 -m venv'
 
 - name: Install certbot packages
-  package: state=present pkg="{{ letsencrypt_packages }}" install_recommends=no update_cache=yes cache_valid_time=3600
-  tags: packages
+  pip:
+    name: certbot
+    state: latest
+    virtualenv: /opt/certbot/
+
+- name: Create symlink for certbot command
+  file: 
+    src: /opt/certbot/bin/certbot
+    dest: /usr/bin/certbot
+    state: link 
+    force: yes
