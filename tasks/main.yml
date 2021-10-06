@@ -5,7 +5,7 @@
   with_first_found:
     - "{{ ansible_os_family }}.yml"
     - default.yml
-  #tags: always
+  tags: always
 
 - name: Set distribution specific variables
   include_vars: "{{ item }}"
@@ -15,12 +15,13 @@
     - "vars/packages-{{ ansible_distribution|lower }}.yml"
     - "vars/packages-{{ ansible_os_family|lower }}.yml"
     - "vars/packages-default.yml"
-  #tags: always
+  tags: always
 
 - include_tasks: setup-{{ letsencrypt_webroot_service }}.yml
   when: letsencrypt_authenticator == "webroot"
 
 - import_tasks: client.yml
+  tags: packages
 
 - import_tasks: cert.yml
 
