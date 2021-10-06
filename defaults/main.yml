@@ -9,6 +9,7 @@
   letsencrypt_webroot_service: apache2
   #letsencrypt_webroot_service: nginx
   letsencrypt_deploy_service: "{{ letsencrypt_webroot_service }}"
+  letsencrypt_deploy_service_restart: false
   letsencrypt_email: "webmaster@{{ ansible_domain }}"
 
   letsencrypt_use_staging: false
@@ -33,7 +34,8 @@
     {% if letsencrypt_expand_cert %}--expand{% endif %}
     {% if letsencrypt_use_staging %}--test-cert{% endif %}
     {% if letsencrypt_email is defined %}--email {{ letsencrypt_email }}{% endif %}
-    {% if letsencrypt_authenticator == "webroot" %}--deploy-hook "service {{ letsencrypt_deploy_service }} force-reload"{% endif %}
+    {% if letsencrypt_authenticator == "webroot" %}--deploy-hook "service {{ letsencrypt_deploy_service }} {{ letsencrypt_deploy_service_restart | ternary('restart', 'force-reload') }}"{% endif %}
+    
 
   letsencrypt_renewal_command: >-
     certbot renew --non-interactive --quiet
