@@ -8,6 +8,5 @@
     #creates: "/etc/letsencrypt/live/{{ letsencrypt_cert_name }}"
   register: letsencrypt_certbot
   changed_when: ('Congratulations!' in letsencrypt_certbot.stdout)
-  #notify: Restart apache2
 
 - debug: var=letsencrypt_certbot
