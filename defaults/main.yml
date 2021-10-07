@@ -41,7 +41,7 @@
 
   letsencrypt_renewal_command: >-
     {{ letsencrypt_wait_before_command }} &&
-    certbot renew --non-interactive --quiet
+    certbot renew --quiet
   letsencrypt_renewal_frequency:
     day: "*"
     hour: 2
