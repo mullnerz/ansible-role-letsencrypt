@@ -1,5 +1,6 @@
 ---
-- debug: var=letsencrypt_cert_command
+- debug: 
+    var: letsencrypt_cert_command
 
 - name: Obtain or renew certificate for domains
   shell: "{{ letsencrypt_cert_command }}"
@@ -8,4 +9,5 @@
   register: letsencrypt_certbot
   changed_when: ('Congratulations!' in letsencrypt_certbot.stdout)
 
-- debug: var=letsencrypt_certbot
+- debug: 
+    var: letsencrypt_certbot

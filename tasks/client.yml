@@ -1,6 +1,11 @@
 ---
 - name: Install required os packages
-  package: state=present pkg="{{ letsencrypt_required_packages }}" install_recommends=no update_cache=yes cache_valid_time=3600
+  package: 
+    state: present
+    name: "{{ letsencrypt_required_packages }}"
+    install_recommends: no
+    update_cache: yes
+    cache_valid_time: 3600
 
 - name: Install required pip packages
   pip:
