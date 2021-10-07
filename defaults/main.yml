@@ -5,6 +5,7 @@
     - "{{ ansible_fqdn }}"
 
   letsencrypt_authenticator: webroot
+  # letsencrypt_authenticator: standalone
   letsencrypt_webroot_path: /var/www/html
   letsencrypt_webroot_service: apache2
   #letsencrypt_webroot_service: nginx
@@ -20,7 +21,7 @@
   #letsencrypt_cert_name_suffix:
 
   letsencrypt_rsa_key_size: 2048
-  letsencrypt_must_staple: false 
+  letsencrypt_must_staple: false
 
   letsencrypt_cert_command: >-
     certbot certonly --non-interactive --agree-tos
@@ -35,7 +36,6 @@
     {% if letsencrypt_use_staging %}--test-cert{% endif %}
     {% if letsencrypt_email is defined %}--email {{ letsencrypt_email }}{% endif %}
     {% if letsencrypt_authenticator == "webroot" %}--deploy-hook "service {{ letsencrypt_deploy_service }} {{ letsencrypt_deploy_service_restart | ternary('restart', 'force-reload') }}"{% endif %}
-    
 
   letsencrypt_renewal_command: >-
     certbot renew --non-interactive --quiet

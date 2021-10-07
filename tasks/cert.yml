@@ -5,7 +5,6 @@
   shell: "{{ letsencrypt_cert_command }}"
   args:
     executable: /bin/bash
-    #creates: "/etc/letsencrypt/live/{{ letsencrypt_cert_name }}"
   register: letsencrypt_certbot
   changed_when: ('Congratulations!' in letsencrypt_certbot.stdout)
 
