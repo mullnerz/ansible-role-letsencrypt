@@ -7,6 +7,9 @@
   args:
     executable: /bin/bash
   register: letsencrypt_certbot
+  until: letsencrypt_certbot is not failed
+  retries: 3
+  delay: 5
   changed_when: ('Congratulations!' in letsencrypt_certbot.stdout)
 
 - debug: 
