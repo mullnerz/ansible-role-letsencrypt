@@ -22,8 +22,10 @@
 
   letsencrypt_rsa_key_size: 2048
   letsencrypt_must_staple: false
+  letsencrypt_wait_before_command: "sleep $(((RANDOM % 60) + 1))s"
 
   letsencrypt_cert_command: >-
+    {{ letsencrypt_wait_before_command }} &&
     certbot certonly --non-interactive --agree-tos
     {% if letsencrypt_rsa_key_size is defined %}--rsa-key-size {{ letsencrypt_rsa_key_size }}{% endif %}
     {% if letsencrypt_must_staple %}--must-staple{% endif %}
@@ -38,6 +40,7 @@
     {% if letsencrypt_authenticator == "webroot" %}--deploy-hook "service {{ letsencrypt_deploy_service }} {{ letsencrypt_deploy_service_restart | ternary('restart', 'force-reload') }}"{% endif %}
 
   letsencrypt_renewal_command: >-
+    {{ letsencrypt_wait_before_command }} &&
     certbot renew --non-interactive --quiet
   letsencrypt_renewal_frequency:
     day: "*"
