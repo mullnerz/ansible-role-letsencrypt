@@ -17,11 +17,11 @@
     - "vars/packages-default.yml"
   tags: always
 
-- include_tasks: setup-{{ letsencrypt_webroot_service }}.yml
-  when: letsencrypt_authenticator == "webroot"
-
 - import_tasks: client.yml
   tags: packages
+
+- include_tasks: setup-{{ letsencrypt_webroot_service }}.yml
+  when: letsencrypt_authenticator == "webroot"
 
 - import_tasks: cert.yml
 
