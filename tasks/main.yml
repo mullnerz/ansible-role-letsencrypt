@@ -27,3 +27,4 @@
   when: letsencrypt_cert_domains | length
 
 - import_tasks: renew.yml
+  when: letsencrypt_renewal_setup_cronjob

@@ -38,9 +38,12 @@
     {% if letsencrypt_email is defined %}--email {{ letsencrypt_email }}{% endif %}
     {% if letsencrypt_authenticator == "webroot" %}--deploy-hook "service {{ letsencrypt_deploy_service }} {{ letsencrypt_deploy_service_restart | ternary('restart', 'force-reload') }}"{% endif %}
 
+  letsencrypt_renewal_setup_cronjob: true
+  
   letsencrypt_renewal_command: >-
     {{ letsencrypt_wait_before_renewal_command }} &&
     certbot renew --quiet
+  
   letsencrypt_renewal_frequency:
     day: "*"
     hour: 2
