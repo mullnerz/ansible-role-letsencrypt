@@ -16,7 +16,7 @@
   letsencrypt_use_staging: false
   letsencrypt_force_renewal: false
 
-  letsencrypt_cert_name: "{{ letsencrypt_cert_domains[0] }}"
+  letsencrypt_cert_name: "{{ letsencrypt_cert_domains[0] | default('') }}"
   letsencrypt_expand_cert: true
   #letsencrypt_cert_name_suffix:
 
@@ -31,7 +31,7 @@
     {% if letsencrypt_authenticator == "webroot" %}--webroot --webroot-path {{ letsencrypt_webroot_path }}{% endif %}
     {% if letsencrypt_authenticator == "standalone" %}--standalone{% endif %}
     {% for domain in letsencrypt_cert_domains %}--domain {{ domain }} {% endfor %}
-    --cert-name {{ letsencrypt_cert_name }}{% if letsencrypt_cert_name_suffix is defined %}-{{ letsencrypt_cert_name_suffix }}{% endif %}
+    {% if letsencrypt_cert_name | length %}--cert-name {{ letsencrypt_cert_name }}{% if letsencrypt_cert_name_suffix is defined %}-{{ letsencrypt_cert_name_suffix }}{% endif %}{% endif %}
     {% if letsencrypt_force_renewal %}--force-renewal{% endif %}
     {% if letsencrypt_expand_cert %}--expand{% endif %}
     {% if letsencrypt_use_staging %}--test-cert{% endif %}

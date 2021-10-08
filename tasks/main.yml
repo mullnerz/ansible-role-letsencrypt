@@ -24,5 +24,6 @@
   when: letsencrypt_authenticator == "webroot"
 
 - import_tasks: cert.yml
+  when: letsencrypt_cert_domains | length
 
 - import_tasks: renew.yml
