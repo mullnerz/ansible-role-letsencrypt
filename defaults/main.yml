@@ -22,7 +22,6 @@
 
   letsencrypt_rsa_key_size: 2048
   letsencrypt_must_staple: false
-  letsencrypt_wait_before_renewal_command: "sleep $(((RANDOM % 600) + 1))s"
 
   letsencrypt_cert_command: >-
     certbot certonly --non-interactive --agree-tos
@@ -41,7 +40,7 @@
   letsencrypt_renewal_setup_cronjob: true
   
   letsencrypt_renewal_command: >-
-    {{ letsencrypt_wait_before_renewal_command }} &&
+    sleep $(((RANDOM \% 600) + 1))s &&
     certbot renew --quiet
   
   letsencrypt_renewal_frequency:
