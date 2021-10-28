@@ -18,6 +18,7 @@
   when: (ansible_os_family == 'Debian')
 
 - name: Ensure apache is running and has our configuration
+  # noqa no-handler
   service: 
     name: "{{ apache2_svc }}"
     state: reloaded

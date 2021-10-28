@@ -1,8 +1,10 @@
 ---
 - debug: 
+  # noqa unnamed-task
     var: letsencrypt_cert_command
 
 - name: Obtain or renew certificate for domains
+  # noqa command-instead-of-shell
   shell: "{{ letsencrypt_cert_command }}"
   args:
     executable: /bin/bash
@@ -13,5 +15,6 @@
   throttle: 5
   changed_when: ('Congratulations!' in letsencrypt_certbot.stdout)
 
-- debug: 
+- debug:
+  # noqa unnamed-task
     var: letsencrypt_certbot
