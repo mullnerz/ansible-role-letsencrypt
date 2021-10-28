@@ -1,28 +1,55 @@
 ---
 - name: Install required os packages
-  package: 
+  package:
     state: present
-    name: "{{ letsencrypt_required_packages }}"
+    name: "{{ letsencrypt_required_packages[letsencrypt_install_method] }}"
     install_recommends: no
     update_cache: yes
     cache_valid_time: 3600
 
-- name: Install required pip packages
-  pip:
-    name: pip
-    state: latest
-    virtualenv: /opt/certbot/
-    virtualenv_command: 'python3 -m venv'
+- name: Install client with OS provided package
+  block:
 
-- name: Install certbot packages
-  pip:
-    name: certbot
-    state: latest
-    virtualenv: /opt/certbot/
+  - name: Enable Ubuntu universe repository
+    # apt_repository: repo='universe' state=present update_cache=yes mode=644
+    # https://github.com/ansible/ansible/issues/48714
+    command: add-apt-repository universe
+    register: add_universe_repository_command
+    changed_when: not ('already enabled' in add_universe_repository_command.stdout)
 
-- name: Create symlink for certbot command
-  file: 
-    src: /opt/certbot/bin/certbot
-    dest: /usr/bin/certbot
-    state: link 
-    force: yes
+  - name: Install certbot packages
+    package:
+      state: present
+      name: "{{ letsencrypt_packages[letsencrypt_install_method] }}"
+      install_recommends: no
+      update_cache: yes
+      cache_valid_time: 3600
+
+  when: letsencrypt_install_method == "package_os"
+
+- name: Install client with alternate method (Pip package)
+  block:
+
+  - name: Install required pip packages
+    # noqa package-latest
+    pip:
+      name: pip
+      state: latest
+      virtualenv: /opt/certbot/
+      virtualenv_command: "python3 -m venv"
+
+  - name: Install certbot packages
+    # noqa package-latest
+    pip:
+      name: certbot
+      state: latest
+      virtualenv: /opt/certbot/
+
+  - name: Create symlink for certbot command
+    file:
+      src: /opt/certbot/bin/certbot
+      dest: /usr/bin/certbot
+      state: link
+      force: yes
+
+  when: letsencrypt_install_method == "package_pip"

@@ -1,4 +1,8 @@
 ---
 letsencrypt_required_packages:
+  package_os:
+  package_pip:
 
 letsencrypt_packages:
+  package_os:
+  package_pip:
