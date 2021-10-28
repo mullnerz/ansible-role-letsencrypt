@@ -1,0 +1,43 @@
+---
+dependency:
+  name: galaxy
+  enabled: false
+driver:
+  name: docker
+platforms:
+  - name: instance-letsencrypt-default
+    groups:
+      - instances
+    image: "${MOLECULE_IMAGE:-jrei/systemd-ubuntu:20.04}"
+    pre_build_image: true
+    volumes:
+      - /sys/fs/cgroup:/sys/fs/cgroup:ro
+    privileged: true
+    command: /sbin/init    
+provisioner:
+  name: ansible
+  ansible_args:
+    - --skip-tags=docker-notest
+  config_options:
+    defaults:
+      force_valid_group_names: ignore
+      deprecation_warnings: false
+  inventory:
+    group_vars:
+      instances:
+        letsencrypt_cert_domains: []
+        letsencrypt_install_method: package_os
+        letsencrypt_authenticator: standalone
+    host_vars: {}
+verifier:
+  name: ansible
+lint: |
+  set -e
+  echo "-> Running yamllint..."
+  find . -type f -name "*.yml" -o -name "*.yaml" | \
+    xargs yamllint --config-file .yamllint.yml
+  echo "-> Running prettier..."
+  find . -type f -name "*.yml" -o -name "*.yaml" | \
+    xargs prettier --list-different --config .prettierrc.yml || true
+  echo "-> Running ansible-lint..."
+  ansible-lint .

@@ -1,4 +1,5 @@
 galaxy_info:
+  role_name: letsencrypt
   author: mullnerz
   description: Install certbot client and create the requested Let's Encrypt certificates.
   company:
